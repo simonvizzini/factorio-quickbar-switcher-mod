@@ -39,7 +39,7 @@ local function make_hotkey_handler(target_index)
         local player_data = global.player_data[player.index]
         local current_index = player_data.current_layout_index
 
-        utils.log("trying to switch quickbar " .. current_index .. " to " .. index)
+        utils.log("trying to switch quickbar " .. current_index .. " to " .. target_index)
 
         if current_index == target_index then
             utils.log("same index, nothing to do")
