@@ -1,6 +1,6 @@
 local utils = require("utils")
 
-utils.set_debug(true)
+utils.set_debug(false)
 
 local function init_player(player_index)
     global.player_data = global.player_data or {}
