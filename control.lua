@@ -85,11 +85,14 @@ local function make_hotkey_handler(target_index)
 
         for i = 1, quickbar_slot_count do
             local quickbar_slot = quickbar[i]
+            local filter = quickbar.get_filter(i)
+
             table.insert(
                 current_layout,
                 {
-                    name = quickbar_slot.valid_for_read and quickbar_slot.name or nil,
-                    filter = quickbar.get_filter(i)
+                    -- if current slot is empty, but a filter is set then take the filter as name
+                    name = quickbar_slot.valid_for_read and quickbar_slot.name or filter or nil,
+                    filter = filter
                 }
             )
         end
@@ -134,16 +137,18 @@ local function make_hotkey_handler(target_index)
             local quickbar_slot = quickbar[i]
             local item = target_layout[i]
 
-            if item ~= nil and item.name ~= nil then
-                local item_stack = inventory.find_item_stack(item.name)
+            if item then
+                if item.name then
+                    local item_stack = inventory.find_item_stack(item.name)
 
-                if not item_stack then
-                    pprint("couldn't find item " .. item.name .. " in inventory, skipping")
-                elseif not quickbar_slot.can_set_stack(item_stack) then
-                    pprint("can't set quickbar stack, now what? item: " .. item.name)
-                else
-                    quickbar_slot.set_stack(item_stack)
-                    item_stack.clear()
+                    if not item_stack then
+                        pprint("couldn't find item " .. item.name .. " in inventory, skipping")
+                    elseif not quickbar_slot.can_set_stack(item_stack) then
+                        pprint("can't set quickbar stack, now what? item: " .. item.name)
+                    else
+                        quickbar_slot.set_stack(item_stack)
+                        item_stack.clear()
+                    end
                 end
 
                 -- restore filter
