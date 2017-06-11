@@ -13,7 +13,7 @@ end
 
 local function switch_layout(player, target_index)
     local pprint = utils.make_pprint(player, "[QuickbarSwitcher]")
-    local player_data = get_player_data(player.index) -- global.player_data[player.index]
+    local player_data = get_player_data(player.index)
     local current_index = player_data.current_layout_index
 
     utils.log("trying to switch quickbar " .. current_index .. " to " .. target_index)
