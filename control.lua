@@ -2,41 +2,20 @@ local utils = require("utils")
 
 utils.set_debug(false)
 
-local function init_player(player_index)
+local function get_player_data(player_index)
     global.player_data = global.player_data or {}
-    global.player_data[player_index] = {
+    global.player_data[player_index] = global.player_data[player_index] or {
         layouts = {},
         current_layout_index = 1
     }
+    return global.player_data[player_index]
 end
-
-script.on_init(
-    function()
-        utils.log("QuickbarSwitcher: on_init")
-        for _, player in pairs(game.players) do
-            init_player(player.index)
-        end
-    end
-)
-
-script.on_load(
-    function()
-        utils.log("QuickbarSwitcher: on_load")
-    end
-)
-
-script.on_event(
-    defines.events.on_player_created,
-    function(event)
-        init_player(event.player_index)
-    end
-)
 
 local function make_hotkey_handler(target_index)
     return function(event)
         local player = game.players[event.player_index]
         local pprint = utils.make_pprint(player, "[QuickbarSwitcher]")
-        local player_data = global.player_data[player.index]
+        local player_data = get_player_data(player.index) -- global.player_data[player.index]
         local current_index = player_data.current_layout_index
 
         utils.log("trying to switch quickbar " .. current_index .. " to " .. target_index)
